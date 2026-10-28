@@ -8,6 +8,8 @@
 /.github/workflows/ @microsoft/github-copilot-for-azure-writers
 
 # Plugin skills owners (multi-plugin)
+/plugins/azure-skills/skills/aiinfraoptimization/ @umangssharma @gsinha @microsoft/github-copilot-for-azure-writers
+/evals/azure-skills/aiinfraoptimization/ @umangssharma @gsinha @microsoft/github-copilot-for-azure-writers
 /plugins/foundry-iq-skills/ @hustcalm @valangar @kirk-marple @chbradsh @davidm00 @microsoft/github-copilot-for-azure-writers
 /plugins/foundry-iq-skills/skills/foundry-iq/ @hustcalm @valangar @kirk-marple @chbradsh @davidm00 @microsoft/github-copilot-for-azure-writers
 /plugins/azure-skills/skills/ @microsoft/github-copilot-for-azure-writers

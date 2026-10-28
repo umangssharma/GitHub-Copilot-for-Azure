@@ -1,0 +1,66 @@
+name: aiinfraoptimization-routing-eval
+description: Routing checks for read-only diagnosis of deployed AI inference workloads.
+
+tags:
+  type: integration
+  skill: aiinfraoptimization
+
+defaults:
+  runs: 5
+  timeout: "10m"
+  executor: copilot-sdk-agent-runner
+
+scoring:
+  threshold: 0.8
+
+stimuli:
+  - name: Diagnose deployed inference workload
+    prompt: "Diagnose my deployed vLLM inference workload using Prometheus telemetry and recommend optimizations without applying any changes."
+    tags:
+      type: integration
+      tier: smoke
+      cost: llm
+      area: routing
+      earlyTerminate: '[{"type":"skill-call","skill":"aiinfraoptimization"},{"type":"tool-call-count","count":3}]'
+    graders:
+      - type: skill-invocation
+        config:
+          required:
+            - aiinfraoptimization
+      - type: output-not-matches
+        config:
+          pattern: "(?i)fatal error|unhandled exception|stack trace"
+
+  - name: Replay historical inference detections
+    prompt: "Use InfraIQ to replay detections for my deployed inference workload over a historical Prometheus time window. I only want detections, not recommendations or applied changes."
+    tags:
+      type: integration
+      tier: full
+      cost: llm
+      area: routing
+      earlyTerminate: '[{"type":"skill-call","skill":"aiinfraoptimization"},{"type":"tool-call-count","count":3}]'
+    graders:
+      - type: skill-invocation
+        config:
+          required:
+            - aiinfraoptimization
+      - type: output-not-matches
+        config:
+          pattern: "(?i)fatal error|unhandled exception|stack trace"
+
+  - name: Recommend from existing detection evidence
+    prompt: "I already have an aiinfraoptimization detections.json for my deployed AI workload. Generate ranked recommendations from that saved evidence without rerunning detection or executing any proposed actions."
+    tags:
+      type: integration
+      tier: full
+      cost: llm
+      area: routing
+      earlyTerminate: '[{"type":"skill-call","skill":"aiinfraoptimization"},{"type":"tool-call-count","count":3}]'
+    graders:
+      - type: skill-invocation
+        config:
+          required:
+            - aiinfraoptimization
+      - type: output-not-matches
+        config:
+          pattern: "(?i)fatal error|unhandled exception|stack trace"
